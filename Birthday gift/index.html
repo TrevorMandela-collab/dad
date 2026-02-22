@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday Dad</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
+  overflow-x: hidden;
+  text-align: center;
+}
+
+section {
+  padding: 60px 20px;
+}
+
+button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  background: white;
+  color: #203a43;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #ddd;
+}
+
+.hidden {
+  display: none;
+}
+
+/* 🔐 LOCK SCREEN */
+#lockScreen {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+input {
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  margin: 10px;
+  text-align: center;
+}
+
+/* ⌨️ MESSAGE */
+#message {
+  font-size: 22px;
+  max-width: 700px;
+  margin: auto;
+  min-height: 100px;
+}
+
+/* 🖼️ SLIDESHOW */
+.slideshow {
+  width: 80%;
+  max-width: 900px;
+  margin: 40px auto;
+  position: relative;
+}
+
+.slideshow img {
+  width: 100%;
+  height: auto;
+  display: none;
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.slideshow img.active {
+  display: block;
+  opacity: 1;
+}
+
+
+/* 📅 TIMELINE */
+.timeline {
+  max-width: 600px;
+  margin: auto;
+  text-align: left;
+}
+
+.timeline div {
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+}
+
+/* 💙 HEARTS */
+.heart {
+  position: fixed;
+  animation: floatUp 6s linear infinite;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(100vh); opacity: 1; }
+  to { transform: translateY(-10vh); opacity: 0; }
+}
+
+/* 🎉 CONFETTI */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🔐 PASSWORD SCREEN -->
+<div id="lockScreen">
+  <h1>Happy Birthday Dad 🎉</h1>
+  <p>Enter the special password</p>
+  <input type="password" id="password" placeholder="Enter password">
+  <button onclick="unlock()">Unlock</button>
+  <p id="error"></p>
+</div>
+
+<!-- 🎉 CONFETTI -->
+<canvas id="confetti"></canvas>
+
+<!-- 💙 MAIN CONTENT -->
+<div id="mainContent" class="hidden">
+
+<section>
+  <h2>A Message For You</h2>
+  <div id="message"></div>
+</section>
+
+<section>
+  <h2>Our Memories</h2>
+  <div class="slideshow">
+    <img src="photo1.jpg">
+    <img src="photo2.jpg">
+    <img src="photo3.jpg">
+    <img src="photo4.jpg">
+  </div>
+</section>
+
+<section>
+  <h2>Timeline</h2>
+  <div class="timeline">
+    <div><strong>2023:</strong> One of my favorite childhood memories with you.</div>
+    <div><strong>2024:</strong> When you supported me during a hard time.</div>
+    <div><strong>2025:</strong> A moment that made me realize how strong you are.</div>
+    <div><strong>Today:</strong> Celebrating the best dad ever.</div>
+  </div>
+</section>
+
+<h2>I Love You Dad 💙</h2>
+
+</div>
+
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mp3">
+</audio>
+
+<script>
+
+// 🔐 PASSWORD
+function unlock() {
+  const pass = document.getElementById("password").value;
+  if(pass === "dad2026") {   // Change password here
+    document.getElementById("lockScreen").style.display = "none";
+    document.getElementById("mainContent").classList.remove("hidden");
+    document.getElementById("music").play();
+    startTyping();
+    startSlideshow();
+    startHearts();
+    startConfetti();
+  } else {
+    document.getElementById("error").innerText = "Wrong password ❤️";
+  }
+}
+
+// ⌨️ TYPING EFFECT
+const text = "Dad... Thank you for every sacrifice, every lesson, and every moment of strength you showed me. You are my hero, my guide, and my greatest example. I may not always say it, but I am proud to be your child. Happy Birthday. I love you.";
+let i = 0;
+
+function startTyping() {
+  function type() {
+    if(i < text.length) {
+      document.getElementById("message").innerHTML += text.charAt(i);
+      i++;
+      setTimeout(type, 40);
+    }
+  }
+  type();
+}
+
+// 🖼️ SLIDESHOW WITH FADE + ZOOM
+function startSlideshow() {
+  const slides = document.querySelectorAll(".slideshow img");
+  let index = 0;
+
+  slides[index].classList.add("active");
+
+  setInterval(() => {
+    slides[index].classList.remove("active");
+    index = (index + 1) % slides.length;
+    slides[index].classList.add("active");
+  }, 4000);
+}
+
+
+// 💙 FLOATING HEARTS
+function startHearts() {
+  setInterval(() => {
+    let heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "💙";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 20 + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+  }, 600);
+}
+
+// 🎉 CONFETTI
+function startConfetti() {
+  const canvas = document.getElementById("confetti");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  let pieces = [];
+  for(let i=0;i<150;i++){
+    pieces.push({
+      x: Math.random()*canvas.width,
+      y: Math.random()*canvas.height,
+      r: Math.random()*6+2,
+      d: Math.random()*50
+    });
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "white";
+    for(let i=0;i<pieces.length;i++){
+      let p = pieces[i];
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2,true);
+      ctx.fill();
+      p.y += Math.cos(p.d)+1;
+      if(p.y > canvas.height){
+        p.y = -10;
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+</script>
+
+</body>
+</html>
